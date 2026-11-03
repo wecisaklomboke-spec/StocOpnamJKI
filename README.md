@@ -1,0 +1,2 @@
+# StocOpnamJKI
+aplikasi stock
