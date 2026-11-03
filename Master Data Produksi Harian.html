@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Master Produksi Harian</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f8f5;--sf:#fff;--ink:#14231b;--mut:#6b7c72;--ln:#e3ebe6;--ac:#1e7a4c;--acs:#e3f3ea;--ok:#1e7a4c;--no:#c0392b;--wa:#8a6100;--was:#fbf1d6;--th:#f5f9f6;--sh:0 1px 2px rgba(20,35,27,.04),0 6px 20px rgba(20,35,27,.05);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f1713;--sf:#17221c;--ink:#e6efe9;--mut:#95a89c;--ln:#27372e;--ac:#4cc98a;--acs:#18382a;--ok:#5fd08c;--no:#ff8b82;--wa:#e8b84a;--was:#3a2f12;--th:#1c2a22;--sh:none}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0f1713;--sf:#17221c;--ink:#e6efe9;--mut:#95a89c;--ln:#27372e;--ac:#4cc98a;--acs:#18382a;--ok:#5fd08c;--no:#ff8b82;--wa:#e8b84a;--was:#3a2f12;--th:#1c2a22;--sh:none}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14.5px/1.5 "IBM Plex Sans",system-ui,sans-serif}
+.shell{display:flex;min-height:100vh}
+aside{width:245px;flex:none;background:var(--sf);border-right:1px solid var(--ln);padding:18px 14px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.brand{display:flex;gap:10px;align-items:center;padding:0 6px 18px}
+.logo{width:38px;height:38px;border-radius:10px;background:var(--ac);color:#fff;display:grid;place-items:center;font-weight:600;font-size:19px}
+.brand b{display:block;font-size:16px;line-height:1.2}.brand span{font-size:11.5px;color:var(--mut)}
+.sec{font-size:11px;letter-spacing:.08em;color:var(--mut);padding:10px 8px 6px;font-weight:600}
+.ni{display:flex;gap:12px;align-items:center;width:100%;background:transparent;border:0;border-radius:10px;padding:10px 12px;margin-bottom:3px;cursor:pointer;color:var(--ink);font:inherit;text-align:left}
+.ni i{font-style:normal;width:18px;text-align:center;color:var(--mut)}
+.ni:hover{background:var(--th)}
+.ni.on{background:var(--acs);color:var(--ac);font-weight:600}.ni.on i{color:var(--ac)}
+.sv{margin-top:auto;border:1px solid var(--ln);background:var(--th);border-radius:12px;padding:12px;font-size:12px;color:var(--mut)}
+.sv b{display:block;color:var(--ac);font-size:12.5px;margin-bottom:2px}
+.content{flex:1;min-width:0}
+.top{height:60px;border-bottom:1px solid var(--ln);background:var(--sf);display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:13px;color:var(--mut)}
+.top b{color:var(--ink)}
+.av{width:34px;height:34px;border-radius:50%;background:var(--acs);color:var(--ac);display:grid;place-items:center;font-weight:600;font-size:12px}
+main{max-width:1180px;margin:0 auto;padding:28px 28px 48px}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.ph h1{margin:0;font-size:26px;font-weight:600;letter-spacing:-.01em}.ph p{margin:4px 0 0;color:var(--mut)}
+.acts{display:flex;gap:10px}
+h2{font-size:16px;margin:0 0 4px;font-weight:600}
+.sub{color:var(--mut);font-size:12.5px;margin:0 0 14px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:var(--sh)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.05em;color:var(--mut);background:var(--th);padding:9px 10px;white-space:nowrap}
+th:first-child{border-radius:8px 0 0 8px}th:last-child{border-radius:0 8px 8px 0}
+td{border-bottom:1px solid var(--ln);padding:6px 10px;vertical-align:middle}
+input,select,textarea,button{font:inherit;color:inherit}
+input,select,textarea{background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:6px 9px;min-width:0;max-width:100%}
+input:focus-visible,select:focus-visible,button:focus-visible,textarea:focus-visible{outline:2px solid var(--ac);outline-offset:1px}
+td input,td select{width:100%}
+.btn{background:var(--ac);color:#fff;border:1px solid var(--ac);border-radius:10px;padding:8px 16px;cursor:pointer;font-weight:600}
+:root[data-theme="dark"] .btn{color:#08130d}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#08130d}}
+.btn.g{background:var(--sf);color:var(--ink);border-color:var(--ln)}
+.btn.d{background:transparent;color:var(--no);border-color:var(--ln);padding:5px 10px;font-weight:500}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin-bottom:14px}
+.row label{display:flex;flex-direction:column;font-size:12px;color:var(--mut);gap:4px}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--no);font-weight:600}
+.tag{display:inline-block;padding:1px 10px;border-radius:999px;font-size:12px;background:var(--acs);color:var(--ac);font-weight:500}
+.tag.w{background:var(--was);color:var(--wa)}
+.note{background:var(--was);color:var(--wa);padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:14px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px}
+.stat{background:var(--sf);border:1px solid var(--ln);border-radius:16px;padding:16px 18px;box-shadow:var(--sh);cursor:pointer;text-align:left}
+.stat span{display:block;color:var(--mut);font-size:12.5px}.stat b{font-size:28px;font-weight:600}
+.bar{height:8px;border-radius:99px;background:var(--th);overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--ac);border-radius:99px}
+.grid2{display:grid;grid-template-columns:250px 1fr;gap:18px}
+.li{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:10px;padding:10px;margin-bottom:3px;cursor:pointer}
+.li:hover{background:var(--th)}.li.on{background:var(--acs)}
+.sheet{background:#fff;color:#000;border:1.5px solid #000;padding:18px;font-size:13px;border-radius:0}
+.sheet table{font-size:13px}.sheet th,.sheet td{border:1px solid #000;color:#000;padding:4px 6px;background:#fff;border-radius:0;letter-spacing:0;font-size:13px}
+.sheet h3{text-align:center;margin:0 0 10px;font-size:18px}
+.sheet .meta{display:grid;grid-template-columns:1fr 1fr;gap:4px 20px;margin-bottom:10px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:9px 18px;border-radius:10px;font-size:13px}
+@media(max-width:900px){.shell{flex-direction:column}aside{width:auto;height:auto;position:static;flex-direction:row;overflow-x:auto;padding:10px;border-right:0;border-bottom:1px solid var(--ln);align-items:center;gap:4px}.brand,.sec,.sv{display:none}.ni{width:auto;white-space:nowrap;margin:0}.stats{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}main{padding:18px 14px 40px}.top{padding:0 14px}}
+@media print{body *{visibility:hidden}#sheet,#sheet *{visibility:visible}#sheet{position:absolute;left:0;top:0;width:100%;border:0}}
+</style>
+</head>
+<body>
+<div class="shell"><aside id="side"></aside><div class="content"><div class="top" id="top"></div><main id="app"></main></div></div>
+<script>
+const $=s=>document.querySelector(s);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const TODAY=new Date().toISOString().slice(0,10);
+const TABS=[['ringkasan','Ringkasan','⌂','Ringkasan produksi','Pantau SPK, produksi mesin, dan arsip dalam satu tempat.'],['master','Master data','▦','Master data','Customer dan produk yang dipakai di SPK dan T4.'],['spk','SPK','▣','Surat perintah kerja','Input sekali, lalu cetak lembar SPK atau pakai di T4.'],['t4','T4 Produksi Mesin','▤','T4 Produksi Mesin','Catat produksi per mesin: pilih No SPK, lalu Barang.'],['arsip','Arsip bulanan','◫','Arsip bulanan','Pindahkan data lama supaya file tetap ringan.'],['users','Pengguna & akses','☰','Pengguna & akses','Atur siapa yang boleh membuka dan mengubah data.']];
+let tab='ringkasan',S,dbDoc=null,tmr,spkSel='SPK-2026-001',msg='',ME=null,ROLES={},rolesDoc=null,uq='',uh=[],uprof={};
+
+function seed(){return{
+ cust:[{k:'JKI001',n:'Satrio Plastik'},{k:'JKI002',n:'Maju Kemasan'},{k:'JKI003',n:'Berkah Jaya'}],
+ prod:[
+  {id:'P00001',kb:'J000121',c:'JKI001',n:'Kantong HDPE 25x40 Bening',kat:'Kantong',sat:'Kg'},
+  {id:'P00002',kb:'J000122',c:'JKI001',n:'Kantong HDPE 30x50 Hitam',kat:'Kantong',sat:'Kg'},
+  {id:'P00003',kb:'',c:'JKI002',n:'Plastik Rol LDPE 60cm',kat:'Rol',sat:'Rol'},
+  {id:'P00004',kb:'J000150',c:'JKI003',n:'Kaos Oblong 35x60',kat:'Kaos',sat:'Kg'}],
+ nextP:5,
+ spk:[
+  {no:'SPK-2026-001',tgl:'2026-10-28',so:'SO-101',c:'JKI001',pk:[1,1,0,1],cat:'CONTOH',st:'Open',items:[{p:'P00001',q:500},{p:'P00002',q:300}]},
+  {no:'SPK-2026-002',tgl:'2026-08-10',so:'SO-090',c:'JKI002',pk:[1,0,0,0],cat:'CONTOH',st:'Selesai',items:[{p:'P00003',q:200}]}],
+ t4:[
+  {id:1,tgl:'2026-10-30',mesin:'M-01',spk:'SPK-2026-001',p:'P00001',mulai:'07:00',selesai:'15:00',q:220,st:'Disetujui'},
+  {id:2,tgl:'2026-10-31',mesin:'M-02',spk:'SPK-2026-001',p:'P00002',mulai:'07:00',selesai:'15:00',q:130,st:'Menunggu'},
+  {id:3,tgl:'2026-08-12',mesin:'M-03',spk:'SPK-2026-002',p:'P00003',mulai:'07:00',selesai:'15:00',q:200,st:'Disetujui'},
+  {id:4,tgl:'2026-08-13',mesin:'M-03',spk:'SPK-2026-002',p:'P00003',mulai:'15:00',selesai:'23:00',q:50,st:'Menunggu'}],
+ arsip:{t4:[],spk:[]},log:[]};}
+
+function save(){
+  clearTimeout(tmr);
+  tmr=setTimeout(async()=>{
+    const j=JSON.stringify(S);
+    try{ if(dbDoc) await dbDoc.set({json:j}); else localStorage.setItem('mp',j); }catch(e){}
+    const el=$('#sv'); if(el) el.textContent='· tersimpan';
+  },400);
+}
+function toast(t){msg=t;let e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2800);}
+const cust=k=>S.cust.find(c=>c.k===k);
+const prod=id=>S.prod.find(p=>p.id===id);
+const spk=no=>S.spk.find(s=>s.no===no);
+const real=(no,p)=>S.t4.filter(r=>r.spk===no&&r.p===p).reduce((a,r)=>a+(+r.q||0),0);
+function cekT4(r){
+  if(!r.spk)return'No SPK kosong';
+  const s=spk(r.spk); if(!s)return'No SPK tidak dikenal';
+  if(!r.p)return'Barang kosong';
+  if(!s.items.some(i=>i.p===r.p))return'Barang tidak ada di SPK ini';
+  if(!r.mulai||!r.selesai)return'Jam belum lengkap';
+  return'OK';
+}
+function cekSPK(s,i){const p=prod(i.p);if(!p)return'Produk kosong';return p.c!==s.c?'Produk bukan milik customer SPK ini':'OK';}
+
+const RL=['Admin','Admin PPIC','Data Analyst','Manajemen'];
+const ACC={'Admin':{master:1,spk:1,t4:1,arsip:1,approve:1,users:1},'Admin PPIC':{master:1,spk:1,t4:1},'Data Analyst':{master:1,t4:1,arsip:1,approve:1},'Manajemen':{}};
+const role=()=>!ME?'':((ME.isOwner||ME.canEdit)?'Admin':(ROLES[ME.id]||''));
+const can=a=>!!(ACC[role()]||{})[a];
+const ini=()=>((ME&&ME.name)||'U').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+function lock(){
+  if(!role()||tab==='ringkasan'||tab==='users')return;
+  const ed=can(tab),ap=can('approve');
+  document.querySelectorAll('#app input,#app select,#app textarea').forEach(e=>{if(!ed||(e.dataset.ap&&!ap))e.disabled=true;});
+  if(!ed){document.querySelectorAll('#app .btn:not(.pr)').forEach(e=>e.remove());const h=$('#app .ph');if(h)h.insertAdjacentHTML('afterend','<div class="note">Peran Anda hanya bisa melihat halaman ini.</div>');}
+}
+function rDenied(){return`<div class="card"><h2>Belum ada akses</h2><p class="sub">Akun ${esc(ME?.name||'Anda')} belum diberi peran. Minta Admin menambahkan akun ini di menu Pengguna & akses.</p></div>`;}
+function rUsers(){
+  const ids=Object.keys(ROLES);
+  return`<div class="card"><h2>Peran</h2><p class="sub">Admin: semua fitur. Admin PPIC: master, SPK, T4. Data Analyst: master, T4 (termasuk persetujuan), arsip. Manajemen: hanya melihat dan mencetak SPK. Pemilik halaman otomatis Admin.</p>
+  <div class="scroll"><table><tr><th>PENGGUNA</th><th>PERAN</th><th></th></tr>
+  ${ids.map(id=>`<tr><td>${esc(uprof[id]?.name||id)}</td><td><select onchange="setRole('${id}',this.value)">${RL.map(r=>`<option ${r===ROLES[id]?'selected':''}>${r}</option>`).join('')}</select></td><td><button class="btn d" onclick="setRole('${id}',null)">Hapus akses</button></td></tr>`).join('')||'<tr><td colspan="3">Belum ada pengguna. Tambah dari kartu di bawah.</td></tr>'}</table></div></div>
+  <div class="card"><h2>Tambah pengguna</h2><p class="sub">Cari nama akun claude.ai yang sudah bisa membuka halaman ini.</p>
+  <div class="row"><label>Nama<input id="uq" value="${esc(uq)}" onchange="searchU(this.value)"></label><button class="btn" onclick="searchU($('#uq').value)">Cari</button></div>
+  ${uh.map(h=>`<div class="row" style="align-items:center"><span style="min-width:200px">${esc(h.name)}${h.guest?' <span class="tag w">tamu</span>':''}</span><select id="r_${h.id}">${RL.map(r=>`<option>${r}</option>`).join('')}</select><button class="btn g" onclick="setRole('${h.id}',$('#r_${h.id}').value)">Beri akses</button></div>`).join('')}</div>`;
+}
+async function searchU(q){uq=q;try{const u=await window.claude.use('user');uh=await u.search(q);}catch(e){uh=[];}render();}
+async function loadProf(){try{const u=await window.claude.use('user');uprof=await u.profiles(Object.keys(ROLES));}catch(e){}}
+async function setRole(id,r){if(r)ROLES[id]=r;else delete ROLES[id];
+  try{if(rolesDoc)await rolesDoc.set({json:JSON.stringify(ROLES)});else localStorage.setItem('mp_roles',JSON.stringify(ROLES));}catch(e){toast('Peran gagal disimpan. Hanya Admin yang bisa mengubahnya.');}
+  await loadProf();render();}
+function render(){
+  if(tab==='users'&&!can('users'))tab='ringkasan';
+  const T=TABS.find(t=>t[0]===tab);
+  const grp=(a,b)=>TABS.slice(a,b).map(([k,l,ic])=>`<button class="ni ${k===tab?'on':''}" onclick="tab='${k}';render()"><i>${ic}</i>${l}</button>`).join('');
+  $('#side').innerHTML=`<div class="brand"><div class="logo">J</div><div><b>Master Produksi JKI</b><span>Data produksi harian</span></div></div>
+  <div class="sec">MENU UTAMA</div>${grp(0,3)}<div class="sec">PRODUKSI</div>${grp(3,5)}${can('users')?`<div class="sec">PENGATURAN</div>${grp(5,6)}`:''}
+  <div class="sv"><b>Data tersimpan bersama</b>Perubahan tersimpan otomatis. Edit terakhir menimpa edit sebelumnya.</div>`;
+  $('#top').innerHTML=`<div>Master Produksi JKI / <b>${T[1]}</b></div><div style="display:flex;gap:10px;align-items:center"><span>${esc(ME?.name||'')} <b>${esc(role())}</b></span><div class="av">${esc(ini())}</div></div>`;
+  const acts=tab==='ringkasan'?`<div class="acts">${can('t4')?`<button class="btn g" onclick="tab='t4';addT4()">+ Baris T4</button>`:''}${can('spk')?`<button class="btn" onclick="tab='spk';newSPK()">+ SPK baru</button>`:''}</div>`:'';
+  $('#app').innerHTML=`<div class="ph"><div><h1>${T[3]}</h1><p>${T[4]}</p></div>${acts}</div>`+(!ME?'<div class="card">Memuat data…</div>':!role()?rDenied():({ringkasan:rRingkasan,master:rMaster,spk:rSPK,t4:rT4,arsip:rArsip,users:rUsers})[tab]());
+  lock();
+}
+function rRingkasan(){
+  const open=S.spk.filter(s=>s.st==='Open'),bad=S.t4.filter(r=>cekT4(r)!=='OK'),wait=S.t4.filter(r=>r.st==='Menunggu'),p=plan();
+  const st=(l,v,t)=>`<button class="stat" onclick="tab='${t}';render()"><span>${l}</span><b>${v}</b></button>`;
+  return`<div class="stats">${st('SPK terbuka',open.length,'spk')}${st('Produksi belum disetujui',wait.length,'t4')}${st('Baris perlu dicek',bad.length,'t4')}${st('Siap diarsipkan',p.mv.length,'arsip')}</div>
+  <div class="card"><h2>SPK terbuka</h2><p class="sub">Realisasi produksi dibanding qty SPK.</p>
+  ${open.map(s=>{const q=s.items.reduce((a,i)=>a+i.q,0),r=s.items.reduce((a,i)=>a+real(s.no,i.p),0),pc=q?Math.min(100,Math.round(r/q*100)):0;return`<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between"><span><b class="mono">${esc(s.no)}</b> ${esc(cust(s.c)?.n)}</span><span>${r} / ${q} (${pc}%)</span></div><div class="bar"><i style="width:${pc}%"></i></div></div>`}).join('')||'<p>Tidak ada SPK terbuka. Buat SPK baru dari tombol di kanan atas.</p>'}</div>
+  <div class="card"><h2>Baris T4 yang perlu diperbaiki</h2><p class="sub">Cek Data tidak OK.</p>
+  <div class="scroll"><table><tr><th>TANGGAL</th><th>MESIN</th><th>NO SPK</th><th>MASALAH</th></tr>
+  ${bad.map(r=>`<tr><td>${r.tgl}</td><td>${esc(r.mesin)||'-'}</td><td class="mono">${esc(r.spk)||'-'}</td><td class="bad">${cekT4(r)}</td></tr>`).join('')||'<tr><td colspan="4">Semua baris T4 sudah OK.</td></tr>'}</table></div></div>`;
+}
+
+/* ---------- MASTER ---------- */
+function rMaster(){
+  const need=S.prod.filter(p=>p.kat==='Lainnya').length;
+  return`<div class="card"><h2>M_CUSTOMER <span class="tag">${S.cust.length}</span></h2>
+  <div class="row"><label>Kode<input id="ck" value="JKI${String(S.cust.length+1).padStart(3,'0')}" size="9"></label>
+  <label>Nama customer<input id="cn" size="28"></label><button class="btn" onclick="addC()">Tambah customer</button></div>
+  <div class="scroll"><table><tr><th>Kode</th><th>Nama</th><th>Jumlah produk</th></tr>
+  ${S.cust.map(c=>`<tr><td class="mono">${esc(c.k)}</td><td>${esc(c.n)}</td><td>${S.prod.filter(p=>p.c===c.k).length}</td></tr>`).join('')}</table></div></div>
+  <div class="card"><h2>M_PRODUK <span class="tag">${S.prod.length}</span></h2>
+  ${need?`<div class="note">${need} produk masih di kategori Lainnya. Cek kategori dan satuannya.</div>`:''}
+  <div class="row"><label>ID Produk (otomatis)<input value="P${String(S.nextP).padStart(5,'0')}" size="9" readonly></label>
+  <label>Kode customer<select id="pc">${S.cust.map(c=>`<option value="${c.k}">${esc(c.k)} ${esc(c.n)}</option>`).join('')}</select></label>
+  <label>Nama barang<input id="pn" size="26"></label><label>Kode barang lama<input id="pk" size="9"></label>
+  <button class="btn" onclick="addP()">Tambah produk</button></div>
+  <div class="scroll"><table><tr><th>ID</th><th>Kode barang</th><th>Customer</th><th>Nama barang</th><th>Kategori</th><th>Satuan</th></tr>
+  ${S.prod.map((p,i)=>`<tr><td class="mono">${p.id}</td><td class="mono">${esc(p.kb)||'-'}</td><td>${esc(cust(p.c)?.n)}</td><td>${esc(p.n)}</td>
+  <td><select onchange="S.prod[${i}].kat=this.value;save();render()">${['Kantong','Rol','Kaos','Lainnya'].map(k=>`<option ${k===p.kat?'selected':''}>${k}</option>`).join('')}</select></td>
+  <td><select onchange="S.prod[${i}].sat=this.value;save()">${['Kg','Rol','Pcs'].map(k=>`<option ${k===p.sat?'selected':''}>${k}</option>`).join('')}</select></td></tr>`).join('')}</table></div></div>`;
+}
+function guess(n){n=n.toLowerCase();if(/kaos|oblong/.test(n))return['Kaos','Kg'];if(/rol/.test(n))return['Rol','Rol'];if(/kantong|hdpe|pe /.test(n))return['Kantong','Kg'];return['Lainnya','Kg'];}
+function addC(){const k=$('#ck').value.trim(),n=$('#cn').value.trim();if(!k||!n)return toast('Isi kode dan nama customer.');if(cust(k))return toast('Kode customer sudah ada.');S.cust.push({k,n});save();render();}
+function addP(){const n=$('#pn').value.trim();if(!n)return toast('Isi nama barang.');const[g,s]=guess(n);S.prod.push({id:'P'+String(S.nextP++).padStart(5,'0'),kb:$('#pk').value.trim(),c:$('#pc').value,n,kat:g,sat:s});save();render();}
+
+/* ---------- SPK ---------- */
+const PK=['Label berat','Label kode operator','Bonus kaos','Sample per rol'];
+function rSPK(){
+  const s=spk(spkSel)||S.spk[0];if(s)spkSel=s.no;
+  return`<div class="grid2"><div class="card"><button class="btn" style="width:100%;margin-bottom:8px" onclick="newSPK()">SPK baru</button>
+  ${S.spk.map(x=>`<button class="li ${x.no===spkSel?'on':''}" onclick="spkSel='${x.no}';render()"><b class="mono">${esc(x.no)}</b><br><span class="tag ${x.st==='Open'?'':'w'}">${x.st}</span> ${esc(cust(x.c)?.n)}</button>`).join('')||'<p>Belum ada SPK.</p>'}</div>
+  <div>${s?spkForm(s):'<div class="card">Buat SPK pertama dengan tombol SPK baru.</div>'}</div></div>`;
+}
+function spkForm(s){
+  const i=S.spk.indexOf(s),ps=S.prod.filter(p=>p.c===s.c);
+  return`<div class="card"><h2>SPK_HEADER</h2><div class="row">
+  <label>No SPK<input value="${esc(s.no)}" onchange="renSPK(${i},this.value)"></label>
+  <label>Tanggal<input type="date" value="${s.tgl}" onchange="S.spk[${i}].tgl=this.value;save();render()"></label>
+  <label>No SO<input value="${esc(s.so)}" size="10" onchange="S.spk[${i}].so=this.value;save();render()"></label>
+  <label>Customer<select onchange="S.spk[${i}].c=this.value;save();render()">${S.cust.map(c=>`<option value="${c.k}" ${c.k===s.c?'selected':''}>${esc(c.n)}</option>`).join('')}</select></label>
+  <label>Status<select onchange="S.spk[${i}].st=this.value;save();render()">${['Open','Selesai','Batal'].map(t=>`<option ${t===s.st?'selected':''}>${t}</option>`).join('')}</select></label></div>
+  <div class="row">${PK.map((l,k)=>`<label style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" ${s.pk[k]?'checked':''} onchange="S.spk[${i}].pk[${k}]=this.checked?1:0;save();render()">${l}</label>`).join('')}</div>
+  <div class="row">${ROLE.map((r,k)=>`<label>Mengetahui: ${r}<input value="${esc((s.tt||[])[k])}" placeholder="Nama" size="20" onchange="setTT(${i},${k},this.value)"></label>`).join('')}</div>
+  <label style="display:block;font-size:12px;color:var(--mut)">Catatan<input style="width:100%" value="${esc(s.cat)}" onchange="S.spk[${i}].cat=this.value;save();render()"></label></div>
+  <div class="card"><h2>SPK_PRODUKSI</h2><div class="scroll"><table><tr><th>Produk</th><th>Qty SPK</th><th>Realisasi</th><th>Sisa</th><th>Cek Data</th><th></th></tr>
+  ${s.items.map((it,k)=>{const r=real(s.no,it.p),c=cekSPK(s,it);return`<tr><td><select onchange="S.spk[${i}].items[${k}].p=this.value;save();render()"><option value="">Pilih produk</option>${ps.map(p=>`<option value="${p.id}" ${p.id===it.p?'selected':''}>${esc(p.n)}</option>`).join('')}${it.p&&!ps.some(p=>p.id===it.p)?`<option value="${it.p}" selected>${esc(prod(it.p)?.n)}</option>`:''}</select></td>
+  <td><input type="number" value="${it.q}" style="width:90px" onchange="S.spk[${i}].items[${k}].q=+this.value;save();render()"></td><td>${r}</td><td>${it.q-r}</td>
+  <td class="${c==='OK'?'ok':'bad'}">${c}</td><td><button class="btn d" onclick="S.spk[${i}].items.splice(${k},1);save();render()">Hapus</button></td></tr>`}).join('')}</table></div>
+  <div class="row" style="margin-top:10px"><button class="btn g" onclick="S.spk[${i}].items.push({p:'',q:0});save();render()">Tambah barang</button>
+  <button class="btn pr" onclick="window.print()">Cetak lembar SPK</button><button class="btn d" onclick="delSPK(${i})">Hapus SPK</button></div>
+  ${s.items.length>13?'<div class="note">Satu lembar cetak memuat maksimal 13 barang. Sisanya tidak ikut tercetak.</div>':''}</div>
+  <div class="card"><h2>SPK_CETAK</h2><div id="sheet" class="sheet"><h3>SURAT PERINTAH KERJA</h3>
+  <div class="meta"><div>No SPK: <b>${esc(s.no)}</b></div><div>Tanggal: ${esc(s.tgl)}</div><div>No SO: ${esc(s.so)}</div><div>Customer: ${esc(cust(s.c)?.n)}</div></div>
+  <table><tr><th>No</th><th>Barang</th><th>Satuan</th><th>Qty</th></tr>
+  ${Array.from({length:13},(_,k)=>{const it=s.items[k],p=it&&prod(it.p);return`<tr><td>${k+1}</td><td>${p?esc(p.n):'&nbsp;'}</td><td>${p?p.sat:''}</td><td>${it?it.q:''}</td></tr>`}).join('')}</table>
+  <p>Pakai: ${PK.map((l,k)=>(s.pk[k]?'[x] ':'[ ] ')+l).join(' &nbsp; ')}</p><p>Catatan: ${esc(s.cat)}</p>${ttb(s)}</div></div>`;
+}
+function newSPK(){const n=S.spk.length+1;const no='SPK-'+TODAY.slice(0,4)+'-'+String(n).padStart(3,'0');S.spk.push({no,tgl:TODAY,so:'',c:S.cust[0].k,pk:[0,0,0,0],cat:'',st:'Open',items:[]});spkSel=no;save();render();}
+function renSPK(i,v){v=v.trim();if(!v||spk(v))return toast('No SPK kosong atau sudah dipakai.'),render();const o=S.spk[i].no;S.t4.forEach(r=>{if(r.spk===o)r.spk=v});S.spk[i].no=v;spkSel=v;save();render();}
+const ROLE=['Kepala Produksi','Direktur','Pembelian'];
+function setTT(i,k,v){const s=S.spk[i];s.tt=s.tt||['','',''];s.tt[k]=v;save();render();}
+function ttb(s){const t=s.tt||['','',''];return`<p style="margin:16px 0 6px;text-align:center"><b>Mengetahui</b></p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center">${ROLE.map((r,k)=>`<div style="border:1px solid #000;padding:6px"><div>${r}</div><div style="height:64px"></div><div style="border-top:1px solid #000;padding-top:3px">${esc(t[k])||'&nbsp;'}</div></div>`).join('')}</div>`;}
+function delSPK(i){if(!confirm('Hapus SPK ini?'))return;S.spk.splice(i,1);save();render();}
+
+/* ---------- T4 ---------- */
+function rT4(){
+  const open=S.spk.filter(s=>s.st==='Open');
+  return`<div class="card"><h2>T4_PRODUKSI_MESIN</h2><div class="note">Pilih No SPK dulu, lalu Barang. Satu mesin yang mengerjakan beberapa SPK atau barang dalam satu shift dicatat sebagai beberapa baris.</div>
+  <button class="btn" onclick="addT4()">Tambah baris</button>
+  <div class="scroll" style="margin-top:10px"><table><tr><th>Tanggal</th><th>Mesin</th><th>No SPK</th><th>Barang</th><th>Satuan</th><th>Mulai</th><th>Selesai</th><th>Qty</th><th>Status</th><th>Cek Data</th><th></th></tr>
+  ${S.t4.map((r,i)=>{const s=spk(r.spk),c=cekT4(r),p=prod(r.p);return`<tr>
+  <td><input type="date" value="${r.tgl}" onchange="S.t4[${i}].tgl=this.value;save()"></td>
+  <td><input value="${esc(r.mesin)}" size="6" onchange="S.t4[${i}].mesin=this.value;save()"></td>
+  <td><select onchange="t4spk(${i},this.value)"><option value="">Pilih SPK</option>${open.map(x=>`<option ${x.no===r.spk?'selected':''}>${esc(x.no)}</option>`).join('')}${r.spk&&!open.some(x=>x.no===r.spk)?`<option selected>${esc(r.spk)}</option>`:''}</select></td>
+  <td><select onchange="S.t4[${i}].p=this.value;save();render()"><option value="">Pilih barang</option>${(s?s.items:[]).map(it=>`<option value="${it.p}" ${it.p===r.p?'selected':''}>${esc(prod(it.p)?.n)}</option>`).join('')}${r.p&&s&&!s.items.some(it=>it.p===r.p)?`<option value="${r.p}" selected>${esc(prod(r.p)?.n)}</option>`:''}</select></td>
+  <td>${p?p.sat:''}</td>
+  <td><input type="time" value="${r.mulai}" onchange="S.t4[${i}].mulai=this.value;save();render()"></td>
+  <td><input type="time" value="${r.selesai}" onchange="S.t4[${i}].selesai=this.value;save();render()"></td>
+  <td><input type="number" value="${r.q}" style="width:80px" onchange="S.t4[${i}].q=+this.value;save();render()"></td>
+  <td><select data-ap="1" onchange="S.t4[${i}].st=this.value;save()">${['Menunggu','Disetujui'].map(t=>`<option ${t===r.st?'selected':''}>${t}</option>`).join('')}</select></td>
+  <td class="${c==='OK'?'ok':'bad'}">${c}</td><td><button class="btn d" onclick="S.t4.splice(${i},1);save();render()">Hapus</button></td></tr>`}).join('')}</table></div>
+  ${S.t4.length?'':'<p>Belum ada produksi. Tambah baris pertama.</p>'}</div>`;
+}
+function t4spk(i,v){const r=S.t4[i];r.spk=v;const s=spk(v);if(!s||!s.items.some(it=>it.p===r.p))r.p='';save();render();}
+function addT4(){const id=Math.max(0,...S.t4.map(r=>r.id))+1;S.t4.unshift({id,tgl:TODAY,mesin:'',spk:'',p:'',mulai:'',selesai:'',q:0,st:'Menunggu'});save();render();}
+
+/* ---------- ARSIP ---------- */
+function cutoff(){let y=+TODAY.slice(0,4),m=+TODAY.slice(5,7)-1;if(m<1){m=12;y--}return`${y}-${String(m).padStart(2,'0')}-01`;}
+function plan(){
+  const c=cutoff(),old=S.t4.filter(r=>r.tgl<c),mv=old.filter(r=>r.st==='Disetujui'),keep=old.length-mv.length;
+  const left=S.t4.filter(r=>!mv.includes(r));
+  const sp=S.spk.filter(s=>s.st!=='Open'&&!left.some(r=>r.spk===s.no));
+  return{c,mv,keep,sp};
+}
+function rArsip(){
+  const p=plan();
+  return`<div class="card"><h2>Arsip bulanan</h2>
+  <p>Master hanya menyimpan bulan berjalan dan 1 bulan sebelumnya. Data bertanggal sebelum <b>${p.c}</b> berstatus Disetujui akan dipindah ke arsip.</p>
+  <p>Siap dipindah: <b>${p.mv.length}</b> baris T4, <b>${p.sp.length}</b> SPK. Belum Disetujui, tetap di master: <b class="${p.keep?'bad':''}">${p.keep}</b> baris.</p>
+  <button class="btn" onclick="runArsip()">Jalankan arsip sekarang</button></div>
+  <div class="card"><h2>LOG_ARSIP</h2><div class="scroll"><table><tr><th>Waktu</th><th>T4 dipindah</th><th>SPK dipindah</th><th>Belum Disetujui</th><th>Hasil</th></tr>
+  ${S.log.map(l=>`<tr><td>${esc(l.w)}</td><td>${l.t}</td><td>${l.s}</td><td>${l.k}</td><td class="${l.h==='OK'?'ok':'bad'}">${l.h}</td></tr>`).join('')||'<tr><td colspan="5">Belum ada proses arsip.</td></tr>'}</table></div>
+  <p style="color:var(--mut);font-size:13px">Arsip berisi ${S.arsip.t4.length} baris T4 dan ${S.arsip.spk.length} SPK (tersimpan sebagai nilai, tanpa rumus).</p></div>`;
+}
+function runArsip(){
+  const p=plan();
+  if(!confirm(`Pindahkan ${p.mv.length} baris T4 dan ${p.sp.length} SPK ke arsip?`))return;
+  const w=new Date().toLocaleString('id-ID'),b4=S.arsip.t4.length,b2=S.arsip.spk.length;
+  try{
+    S.arsip.t4.push(...p.mv.map(r=>({...r})));S.arsip.spk.push(...p.sp.map(s=>JSON.parse(JSON.stringify(s))));
+    if(S.arsip.t4.length-b4!==p.mv.length||S.arsip.spk.length-b2!==p.sp.length)throw 0;
+    S.t4=S.t4.filter(r=>!p.mv.includes(r));S.spk=S.spk.filter(s=>!p.sp.includes(s));
+    S.log.unshift({w,t:p.mv.length,s:p.sp.length,k:p.keep,h:'OK'});
+  }catch(e){S.arsip.t4.length=b4;S.arsip.spk.length=b2;S.log.unshift({w,t:0,s:0,k:p.keep,h:'Error, tidak ada baris dihapus'});}
+  save();render();toast('Proses arsip selesai. Cek LOG_ARSIP.');
+}
+
+/* ---------- start ---------- */
+S=seed();render();
+try{const l=localStorage.getItem('mp');if(l&&!window.claude){S=JSON.parse(l);render();}}catch(e){}
+(async()=>{
+  let db=null,user=null;
+  try{[db,user]=await Promise.all([window.claude?.use('db'),window.claude?.use('user')]);}catch(e){}
+  try{ME=user?await user.me():{id:null,name:'',isOwner:true,canEdit:true};}catch(e){ME={id:null,name:'',isOwner:false,canEdit:false};}
+  if(db){
+    dbDoc=db.doc('app/state');rolesDoc=db.doc('roles/map');
+    try{const d=await dbDoc.get();const v=d.data&&d.data();if(v&&v.json)S=JSON.parse(v.json);}catch(e){}
+    try{const d=await rolesDoc.get();const v=d.data&&d.data();if(v&&v.json)ROLES=JSON.parse(v.json);}catch(e){}
+  }else{try{ROLES=JSON.parse(localStorage.getItem('mp_roles')||'{}');}catch(e){}}
+  await loadProf();render();
+})();
+</script>
+</body>
+</html>
